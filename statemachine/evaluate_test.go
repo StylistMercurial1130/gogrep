@@ -6,6 +6,4 @@ func TestEvaluatorCreation(t *testing.T) {
 
 }
 
-func TestEvaluateSimpleExpression(t *testing.T) {
-
-}
+func TestEvaluateSimpleExpression(t *testing.T) {}
