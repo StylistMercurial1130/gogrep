@@ -1,7 +1,6 @@
 package statemachine
 
 import (
-	"fmt"
 	"testing"
 )
 
@@ -9,9 +8,7 @@ func TestCreateNfaSimple(t *testing.T) {
 	str := "abc"
 	postfix := ExprToPostFix(str)
 
-	nfa := postfix2Nfa(postfix)
-
-	fmt.Printf("nfa: %v\n", nfa)
+	postfix2Nfa(postfix)
 }
 
 func TestExprsDoNotPanic(t *testing.T) {

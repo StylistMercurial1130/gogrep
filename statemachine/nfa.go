@@ -107,7 +107,7 @@ func postfix2Nfa(postfix string) *State {
 				fragmentStack.Push(
 					createFragment(
 						splitState,
-						newStateListFromStates(&splitState.outOne, &splitState.outTwo),
+						newStateListFromStates(&e1.state.outOne, &e2.state.outOne),
 					),
 				)
 

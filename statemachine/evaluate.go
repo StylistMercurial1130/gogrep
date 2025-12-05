@@ -21,8 +21,7 @@ func (sb *stateBuffer) containsMatch() bool {
 }
 
 type Evaluator interface {
-	Load(nfa *State)
-	IsMatch(string) bool
+	IsMatch(*State, string) bool
 }
 
 type nfaEvaluator struct {
@@ -67,7 +66,10 @@ func (evaluator *nfaEvaluator) step(c int) {
 	}
 }
 
-func (evaluator *nfaEvaluator) IsMatch(expr string) bool {
+func (evaluator *nfaEvaluator) IsMatch(nfa *State, expr string) bool {
+	evaluator.listId++
+	evaluator.populateStateBufferFromNfa(nfa)
+
 	for _, character := range expr {
 		evaluator.step(int(character))
 		evaluator.swapBuffers()
@@ -81,15 +83,18 @@ func (evaluator *nfaEvaluator) swapBuffers() {
 	evaluator.sb, evaluator.swapSb = evaluator.swapSb, temp
 }
 
-func (evaluator *nfaEvaluator) Load(nfa *State) {
-	evaluator.listId++
-	evaluator.populateStateBufferFromNfa(nfa)
-}
-
-func NewEvaluator(nfa *State) Evaluator {
+func NewEvaluator() Evaluator {
 	return &nfaEvaluator{
 		sb:     &stateBuffer{},
 		swapSb: &stateBuffer{},
 		listId: 0,
 	}
+}
+
+func Evaluate(expr string, str string) bool {
+	postFixExpr := ExprToPostFix(expr)
+	nfa := postfix2Nfa(postFixExpr)
+
+	evaulator := NewEvaluator()
+	return evaulator.IsMatch(nfa, str)
 }
